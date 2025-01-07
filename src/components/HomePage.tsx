@@ -239,7 +239,7 @@ const HomePage: React.FC = () => {
           </div>
 
 
-          {/* <!-- Text Section --> */}
+          {/* Text Section */}
           <div className="text-DB4A2B text-sm flex flex-col items-center lg:flex-row lg:space-x-4 pt-14">
               <div className="flex items-center space-x-2">
                 <i className="fas fa-globe"></i>
