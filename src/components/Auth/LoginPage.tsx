@@ -1,24 +1,34 @@
 import React,{ useState } from "react";
+import axios  from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import { handleApiCall,ApiResponse } from "../utils/api";
+
 
 const LoginPage: React.FC = () => {
   
-  const [formData, setFormData] = useState({
+  const [loginData, setLoginData] = useState({
     username: "",
     password: "",
   });
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [responseMessage, setResponseMessage] = useState<ApiResponse | null>(
+    null
+  );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form Data Submitted:", formData);
+    const { username, password } = loginData;
+    
+    console.log(username, password)
+    
+    setErrorMessage(null); // effacement des erreurs précédentes
+    const response = await handleApiCall("/api/v1/auth/vendor/sign-in", "POST", { username, password });
+    setResponseMessage(response);
+    console.log("this is response message : \n" + JSON.stringify(response.data, null, 2));
   };
 
   return (
@@ -31,7 +41,7 @@ const LoginPage: React.FC = () => {
         <p className="text-F82502 mt-2 pb-10">Vos clients vous attendent</p>
         </div>
 
-        <form className="w-full max-w-md space-y-4" onSubmit={handleSubmit}>
+        <form className="w-full max-w-md space-y-4" onSubmit={handleLogin}>
           <div className="space-y-0">
 
             <label htmlFor="">Identifiant</label>
@@ -39,8 +49,10 @@ const LoginPage: React.FC = () => {
                 type="text"
                 name="username"
                 placeholder="Nom D'Utilisateur"
-                value={formData.username}
-                onChange={handleChange}
+                value={loginData.username}
+                onChange={(e) =>{
+                  setLoginData({...loginData, username: e.target.value})
+                }}
                 required
                 className="w-full p-3  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
               />
@@ -52,8 +64,12 @@ const LoginPage: React.FC = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Mot de passe"
-                value={formData.password}
-                onChange={handleChange}
+                value={loginData.password}
+                onChange={(e) =>{
+                  setLoginData({
+                    ...loginData, password: e.target.value
+                  })
+                }}
                 required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
               />
@@ -65,16 +81,33 @@ const LoginPage: React.FC = () => {
                 {showPassword ? <AiOutlineEyeInvisible size={20} /> : <AiOutlineEye size={20} />}
               </button>
             </div>
-          
+            
+            {errorMessage && (
+              <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
+            )
+            }
+            
           <div className="pt-20">
-          <button
-            type="submit"
-            className="w-full p-6 bg-DB4A2B text-white rounded-lg hover:bg-orange-700 transition-colors font-semibold"
-          >
-            Connexion
-          </button>
+            <button
+              type="submit"
+              className="w-full p-6 bg-DB4A2B text-white rounded-lg hover:bg-orange-700 transition-colors font-semibold"
+            >
+              Connexion
+            </button>
           </div>
         </form>
+
+        {responseMessage && (
+          <div
+            className={`p-4 rounded ${
+              responseMessage.success
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
+          >
+            {responseMessage.message}
+          </div>
+        )}
 
         <p className="mt-4 text-sm">
           Pas de compte ?{" "}

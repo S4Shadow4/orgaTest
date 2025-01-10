@@ -87,7 +87,7 @@ const HomePage: React.FC = () => {
 
 
       <section className="flex flex-col items-center justify-center mt-64 py-12 px-6 bg-custom-gray">
-        <h2 className="text-5xl font-bold text-gray-800 ml-6 mb-4 self-stretch">Nos Services</h2>
+        <h2 className="text-5xl font-bold text-gray-800 px-2 mb-4 self-stretch">Nos Services</h2>
         <div className="flex items-center ml-28 mb-16 self-stretch">
           <div className="relative">
             <span className="absolute -top-6 -right-28 w-12 h-12 rounded-full bg-DB4A2B flex items-center justify-center">
@@ -135,7 +135,7 @@ const HomePage: React.FC = () => {
           <div className="flex-1 flex justify-center pr-20">
             <img
               src="../../images/tel_renverse2.png"
-              alt="Phone Display"
+              alt="phone_number Display"
               className="max-w-full object-cover"
             />
           </div>

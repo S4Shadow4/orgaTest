@@ -1,31 +1,46 @@
 import React, { useState } from "react";
+import axios  from "axios";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import { FaChevronDown } from "react-icons/fa";
+import { handleApiCall,ApiResponse } from "../utils/api";
+
 
 const SignUpPage: React.FC = () => {
-  const [formData, setFormData] = useState({
+  const [signupData, setSignupData] = useState({
     username: "",
     password: "",
     confirmPassword: "",
-    phone: "",
+    phone_number: "",
     city: "",
   });
-
 
   const [showPassword, setShowPassword] = useState(false);
   const [showPasswordRepeated, setShowPasswordRepeated] = useState(false);
 
-
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [responseMessage, setResponseMessage] = useState<ApiResponse | null>(
+    null
+  );
+  
+/*   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
-  };
+  }; */
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Form Data Submitted:", formData);
-  };
+    const handleSignup = async (e: React.FormEvent) => {
+      e.preventDefault();
+      const { username, password, confirmPassword, phone_number, city } = signupData;
+  
+      if (password !== confirmPassword) {
+        setErrorMessage("Les mots de passe ne correspondent pas.");
+        return;
+      }
+      console.log(username, password, confirmPassword, phone_number, city)
+  
+      setErrorMessage(null); // effacement des erreurs précédentes
+      const response = await handleApiCall("/api/v1/auth/vendor/sign-up", "POST", { username, password, confirmPassword, phone_number, city });
+      setResponseMessage(response);
+    };
 
   return (
     <div className="min-h-screen flex">
@@ -59,7 +74,7 @@ const SignUpPage: React.FC = () => {
         <p className= "text-F82502 mb-6">Passer au level des Pro</p>
         </div>
 
-        <form className="w-full max-w-md space-y-4" onSubmit={handleSubmit}>
+        <form onSubmit={handleSignup} className="w-full max-w-md space-y-4">
           <div className="space-y-0">
 
             <label htmlFor="" className="mt-0 mb-0">Identifiant</label>
@@ -67,8 +82,10 @@ const SignUpPage: React.FC = () => {
                 type="text"
                 name="username"
                 placeholder="Nom D'Utilisateur"
-                value={formData.username}
-                onChange={handleChange}
+                value={signupData.username}
+                onChange={(e) =>
+                  setSignupData({ ...signupData, username: e.target.value})
+                }
                 required
                 className="w-full p-3  border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
               />
@@ -81,8 +98,10 @@ const SignUpPage: React.FC = () => {
                 type={showPassword ? "text" : "password"}
                 name="password"
                 placeholder="Mot de passe"
-                value={formData.password}
-                onChange={handleChange}
+                value={signupData.password}
+                onChange={(e) =>{
+                  setSignupData({ ...signupData, password: e.target.value})
+                }}
                 required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
               />
@@ -101,8 +120,13 @@ const SignUpPage: React.FC = () => {
                   type={showPasswordRepeated ? "text" : "password"}
                   name="confirmPassword"
                   placeholder="Répéter Le Mot De Passe"
-                  value={formData.confirmPassword}
-                  onChange={handleChange}
+                  value={signupData.confirmPassword}
+                  onChange={(e) =>{
+                    setSignupData({
+                      ...signupData,
+                      confirmPassword: e.target.value
+                    })
+                  }}
                   required
                   className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
                 />
@@ -115,16 +139,25 @@ const SignUpPage: React.FC = () => {
                 </button>
               </div>
           </div>
+          
+          {errorMessage && (
+            <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
+          )}
 
 
           <div className="space-y-0">
-            <label htmlFor="">Pays / Téléphone</label>
+            <label htmlFor="">Pays / Téléphone_number</label>
             <input
                 type="tel"
-                name="phone"
+                name="phone_number"
                 placeholder="00-00-00-00"
-                value={formData.phone}
-                onChange={handleChange}
+                value={signupData.phone_number}
+                onChange={(e)=>{
+                  setSignupData({
+                    ...signupData,
+                    phone_number: e.target.value 
+                  })
+                }}
                 required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
             />
@@ -136,8 +169,13 @@ const SignUpPage: React.FC = () => {
                 type="text"
                 name="city"
                 placeholder="LOME"
-                value={formData.city}
-                onChange={handleChange}
+                value={signupData.city}
+                onChange={(e)=>{
+                  setSignupData({
+                    ...signupData,
+                    city: e.target.value
+                  })
+                }}
                 required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
             />
@@ -150,6 +188,18 @@ const SignUpPage: React.FC = () => {
             Inscription
           </button>
         </form>
+        
+        {responseMessage && (
+          <div
+            className={`p-4 rounded ${
+              responseMessage.success
+                ? "bg-green-100 text-green-800"
+                : "bg-red-100 text-red-800"
+            }`}
+          >
+            {responseMessage.message}
+          </div>
+        )}
 
         <p className="mt-4 text-sm text-gray-600">
           Pas de compte ? <a href="#" className="text-CB2B21 underline">S'inscrire</a>
