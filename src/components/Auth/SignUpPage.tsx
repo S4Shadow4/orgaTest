@@ -38,7 +38,7 @@ const SignUpPage: React.FC = () => {
       console.log(username, password, confirmPassword, phone_number, city)
   
       setErrorMessage(null); // effacement des erreurs précédentes
-      const response = await handleApiCall("/api/v1/auth/vendor/sign-up", "POST", { username, password, confirmPassword, phone_number, city });
+      const response = await handleApiCall("/api/v1/auth/vendor/sign-up", "POST", { username, password, phone_number, city });
       setResponseMessage(response);
     };
 
@@ -146,17 +146,22 @@ const SignUpPage: React.FC = () => {
 
 
           <div className="space-y-0">
-            <label htmlFor="">Pays / Téléphone_number</label>
+            <label htmlFor="">Téléphone</label>
             <input
                 type="tel"
+                inputMode="numeric"
+                pattern="\d*"
+                maxLength={8} 
                 name="phone_number"
                 placeholder="00-00-00-00"
-                value={signupData.phone_number}
-                onChange={(e)=>{
-                  setSignupData({
-                    ...signupData,
-                    phone_number: e.target.value 
-                  })
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value)) {
+                    setSignupData({
+                      ...signupData,
+                      phone_number: value,
+                    });
+                  }
                 }}
                 required
                 className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
@@ -202,7 +207,7 @@ const SignUpPage: React.FC = () => {
         )}
 
         <p className="mt-4 text-sm text-gray-600">
-          Pas de compte ? <a href="#" className="text-CB2B21 underline">S'inscrire</a>
+          Votre compte existe ? <a href="/login" className="text-CB2B21 underline">Se connecter</a>
         </p>
       </div>
     </div>
