@@ -1,8 +1,10 @@
-import React,{ useState } from "react";
-import axios  from "axios";
+import React,{ useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+/* import axios  from "axios"; */
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { handleApiCall,ApiResponse } from "../utils/api";
+import { useAuth } from "../contexts/AuthContext";
 
 
 const LoginPage: React.FC = () => {
@@ -12,6 +14,9 @@ const LoginPage: React.FC = () => {
     password: "",
   });
 
+  const navigate = useNavigate();
+  const { login, token } = useAuth();
+
   const [showPassword, setShowPassword] = useState(false);
 
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -19,16 +24,36 @@ const LoginPage: React.FC = () => {
     null
   );
 
+
+  useEffect(() => {
+    // Si le token existe, redirection de l'utilisateur vers le tableau de bord
+    if (token) {
+      navigate("/dashboard");
+    }
+  }, [token, navigate]);
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const { username, password } = loginData;
     
     console.log(username, password)
     
-    setErrorMessage(null); // effacement des erreurs précédentes
+    // effacement des erreurs précédentes
+    setErrorMessage(null); 
     const response = await handleApiCall("/api/v1/auth/vendor/sign-in", "POST", { username, password });
     setResponseMessage(response);
-    console.log("this is response message : \n" + JSON.stringify(response.data, null, 2));
+/*     console.log("this is response message : \n" + JSON.stringify(response.data, null, 2)); */
+
+    const token = response.data.content.accessToken;
+
+    if (token) {
+      // Stocke le token dans le sessionStorage
+      sessionStorage.setItem("token", token);
+      login(token); // Stocke le token dans le contexte et le sessionStorage
+      navigate("/dashboard")
+    } else {
+      console.error("Token not found in the response");
+    }
   };
 
   return (
