@@ -20,14 +20,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     // Ne redirige qu'à la première charge
     if (window.location.pathname === "/login" && savedToken) {
-      navigate("/dashboard");
+      navigate("/dashboardLayout");
     }
   }, [navigate]);
 
   const login = (token: string) => {
     setToken(token);
     sessionStorage.setItem("token", token);
-    navigate("/dashboard"); // Redirige vers /home après connexion
+    navigate("/dashboardLayout"); // Redirige vers /home après connexion
   };
 
   const logout = () => {

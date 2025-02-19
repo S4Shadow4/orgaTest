@@ -13,7 +13,7 @@ import {
 // Enregistrement des composants nécessaires pour Chart.js
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
-const Dashboard = () => {
+const FinancePage = () => {
   // Données pour le graphique
   const data = {
     labels: ["Jan", "Fév", "Mar", "Avr", "Mai", "Juin"],
@@ -98,4 +98,4 @@ const Dashboard = () => {
   );
 };
 
-export default Dashboard;
+export default FinancePage;

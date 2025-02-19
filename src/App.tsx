@@ -8,6 +8,11 @@ import CommandesPage from "./pages/CommandesPages";
 
 import { AuthProvider } from "./components/contexts/AuthContext";
 import { PrivateRoute, PublicRoute } from "./components/RouteGuards";
+import ArticlesPage from "./pages/ArticlesPage";
+import MenuPage from "./pages/MenuPage";
+import DashboardLayout from "./components/Layout/DashboardLayout";
+import FinancePage from "./pages/FinancePage";
+import HistoriquePage from "./pages/HistoriquePage";
 
 const App: React.FC = () => {
   return (
@@ -18,8 +23,10 @@ const App: React.FC = () => {
           <Route path="/signup" element={<SignUpPage />} />
           {/* <Route path="/login" element={<LoginPage />} /> */}
           {/* <Route path="/dashboard" element={<Dashboard />} /> */}
-          <Route path="/commande" element={<CommandesPage />} />
-
+          
+{/*           <Route path="/dashboardLayout" element={<DashboardLayout/>}> */}
+ 
+{/*           </Route> */}
           <Route
             path="/login"
             element={
@@ -29,13 +36,20 @@ const App: React.FC = () => {
             }
           />
           <Route
-              path="/dashboard"
+              path="/dashboardLayout"
               element={
                 <PrivateRoute>
-                  <Dashboard />
+                  <DashboardLayout />
                 </PrivateRoute>
               }
-            />
+            >
+              <Route path="historique" element={<HistoriquePage/>}/>
+              <Route path="finance" element={<FinancePage/>}/>
+              <Route path="dashboard" element={<Dashboard />} />
+              <Route path="menu" element={<MenuPage/>}/>
+              <Route path="articles" element={<ArticlesPage/>}/>
+              <Route path="commandes" element={<CommandesPage />} /> 
+            </Route>
           </Routes>
         </AuthProvider>
       </Router>

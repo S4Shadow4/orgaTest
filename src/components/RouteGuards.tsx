@@ -16,7 +16,7 @@ export const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children 
   const { token } = useAuth();
 
   if (token) {
-    return <Navigate to="/dashboard" replace />;
+    return <Navigate to="/dashboardLayout" replace />;
   }
 
   return <>{children}</>;

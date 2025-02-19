@@ -12,6 +12,7 @@ module.exports = {
         CB2B21: '#CB2B21',
         'second-custom-gray': '#9B99AF',
         'custom-gray': '#EAEAEA',
+        'dashboard-link': '#7A7A7A'
       },
     },
   },

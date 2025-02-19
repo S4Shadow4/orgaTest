@@ -10,7 +10,7 @@ interface Commande {
   total: number;
 }
 
-const CommandesPage = () => {
+const HistoriquePage = () => {
   const [commandes, setCommandes] = useState<Commande[]>(commandesData);
   const [selectedCommande, setSelectedCommande] = useState<Commande | null>(
     null
@@ -125,4 +125,4 @@ const CommandesPage = () => {
   );
 };
 
-export default CommandesPage;
+export default HistoriquePage;

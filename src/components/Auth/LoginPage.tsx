@@ -28,7 +28,7 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     // Si le token existe, redirection de l'utilisateur vers le tableau de bord
     if (token) {
-      navigate("/dashboard");
+      /* navigate("/dashboard"); */
     }
   }, [token, navigate]);
 
@@ -42,7 +42,7 @@ const LoginPage: React.FC = () => {
     setErrorMessage(null); 
     const response = await handleApiCall("/api/v1/auth/vendor/sign-in", "POST", { username, password });
     setResponseMessage(response);
-/*     console.log("this is response message : \n" + JSON.stringify(response.data, null, 2)); */
+    console.log("this is response message : \n" + JSON.stringify(response.data, null, 2));
 
     const token = response.data.content.accessToken;
 
@@ -50,7 +50,7 @@ const LoginPage: React.FC = () => {
       // Stocke le token dans le sessionStorage
       sessionStorage.setItem("token", token);
       login(token); // Stocke le token dans le contexte et le sessionStorage
-      navigate("/dashboard")
+      /* navigate("/dashboard") */
     } else {
       console.error("Token not found in the response");
     }

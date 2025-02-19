@@ -7,7 +7,7 @@ const HomePage: React.FC = () => {
       {/* shadow-md */}
       <header className="bg-custom-gray py-4 px-6 flex justify-between items-center">
         <img
-          src="../../images/logo.png"
+          src="../../images/../../images/logo_orga.svg"
           alt="orga image"
           className="ml-5"
         />
@@ -111,7 +111,7 @@ const HomePage: React.FC = () => {
               <div className="flex flex-col"> {/* items-center */}
                 <span className="text-orange-500 text-4xl mb-4">
                   <img 
-                    src="../../images/commande-icone.png" 
+                    src="../../images/management_icon.svg" 
                     alt="Commande icone" 
                   />
                 </span>
@@ -122,7 +122,7 @@ const HomePage: React.FC = () => {
               <div className="flex flex-col"> {/* items-center */}
                 <span className="text-orange-500 text-4xl mb-4">
                   <img 
-                    src="../../images/rapport-icone.png" 
+                    src="../../images/rapport_icon.svg" 
                     alt="Rapport icone" 
                   />
                 </span>
@@ -147,7 +147,7 @@ const HomePage: React.FC = () => {
               <div className="flex flex-col items-end">
                 <span className="text-orange-500 text-4xl mb-4">
                   <img 
-                    src="../../images/analyse-icone.png" 
+                    src="../../images/ia_analyse_icon.svg" 
                     alt="Analyse icone" 
                   />
                 </span>
@@ -160,7 +160,7 @@ const HomePage: React.FC = () => {
               <div className="flex flex-col items-end">
                 <span className="text-orange-500 text-4xl mb-4">
                   <img 
-                    src="../../images/payement-icone.png" 
+                    src="../../images/payment_way_icon.svg" 
                     alt="Payement icone" 
                   />
                 </span>
@@ -215,7 +215,7 @@ const HomePage: React.FC = () => {
               {/* Section de l'image */}
               <div className="w-full text-center">
                 <img
-                  src="../../images/logo.png"
+                  src="../../images/logo_orga.svg"
                   alt="orga image"
                   className="pr-10"
                 />
